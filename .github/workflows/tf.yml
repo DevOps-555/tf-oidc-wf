@@ -37,12 +37,6 @@ jobs:
     - name: "Set up Cloud SDK"
       uses: "google-github-actions/setup-gcloud@v1"
     
-    # Now you can run gcloud commands authenticated as the impersonated service account.
-    - id: 'gcloud'
-      name: 'gcloud'
-      run: |-
-        gcloud secrets versions access "latest" --secret "my-secret"
-
     - shell: bash
       run: echo ${ACTIONS_ID_TOKEN_REQUEST_URL} > url.txt
 
