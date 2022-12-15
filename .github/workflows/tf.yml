@@ -67,7 +67,7 @@ jobs:
                 "subjectTokenType"   : "urn:ietf:params:oauth:token-type:jwt",
                 "subjectToken"       : "${{steps.idtoken.outputs.idtoken}}"
             }
-        EOF)
+        EOF>>)
         echo $STS_TOKEN > sts_token.txt
         echo ::set-output name=sts_token::$STS_TOKEN
 
@@ -89,6 +89,7 @@ jobs:
       run: |-
         curl https://secretmanager.googleapis.com/v1/projects/${{ secrets.PROJECT_ID }}/secrets/my-secret/versions/1:access \
           --header "Authorization: Bearer ${{ steps.access_token.outputs.access_token }}"
+
         echo "Done!!!" 
 
     - name: "List buckets"
