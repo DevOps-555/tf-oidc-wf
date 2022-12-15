@@ -8,10 +8,10 @@ terraform {
     google-beta = {
       source  = "hashicorp/google-beta"
       version = "4.45.0"
-    } 
+    }
   }
 }
 
 provider "google-beta" {
-    region      = "europe-west1"
+  region = "europe-west1"
 }
