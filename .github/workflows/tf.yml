@@ -58,7 +58,7 @@ jobs:
       run: |
         STS_TOKEN=$(curl -0 -X POST https://sts.googleapis.com/v1/token \
             -H 'Content-Type: text/json; charset=utf-8' \
-            -d @- << EOF | jq -r .access_token
+            -d @- jq -r .access_token
             {
                 "audience"           : "//iam.googleapis.com/projects/${{ secrets.PROJECT_NUMBER }}/locations/global/workloadIdentityPools/gh-pool/providers/gh-provider",
                 "grantType"          : "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -66,8 +66,7 @@ jobs:
                 "scope"              : "https://www.googleapis.com/auth/cloud-platform",
                 "subjectTokenType"   : "urn:ietf:params:oauth:token-type:jwt",
                 "subjectToken"       : "${{steps.idtoken.outputs.idtoken}}"
-            }
-        EOF)
+            })
         echo $STS_TOKEN > sts_token.txt
         echo ::set-output name=sts_token::$STS_TOKEN
 
@@ -77,11 +76,10 @@ jobs:
         ACCESS_TOKEN=$(curl -0 -X POST https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/${{secrets.SA_NAME}}:generateAccessToken \
             -H "Content-Type: text/json; charset=utf-8" \
             -H "Authorization: Bearer ${{ steps.sts_token.outputs.sts_token }}" \
-            -d @- << EOF | jq -r .accessToken
+            -d @- jq -r .accessToken
             {
                 "scope": [ "https://www.googleapis.com/auth/cloud-platform" ]
-            }
-        EOF)
+            })
         echo $ACCESS_TOKEN > access_token.txt
         echo ::set-output name=access_token::$ACCESS_TOKEN
 
