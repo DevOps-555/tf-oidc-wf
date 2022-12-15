@@ -1,7 +1,8 @@
 resource "google_service_account" "runner_sa" {
   project      = var.gcp_project
-  account_id   = "gh-runner"
-  display_name = "Service Account"
+  account_id   = "tf-gh-runner"
+  display_name = "tf-sa"
+  description = "terraform test project using gh runner"
 }
 
 data "google_project" "project" {

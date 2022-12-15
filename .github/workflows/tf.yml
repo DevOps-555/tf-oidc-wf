@@ -30,9 +30,9 @@ jobs:
       name: "Authenticate to Google Cloud"
       uses: "google-github-actions/auth@v1"
       with:
-        workload_identity_provider: <workload_identity_provider>
-        service_account: <service_account>
-        
+        workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_NAME }}
+        service_account: ${{ secrets.GCP_WORKLOAD_IDENTITY_SA_EMAIL }}
+
     # Install gcloud, `setup-gcloud` automatically picks up authentication from `auth`.
     - name: "Set up Cloud SDK"
       uses: "google-github-actions/setup-gcloud@v1"

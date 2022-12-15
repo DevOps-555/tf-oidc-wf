@@ -11,3 +11,10 @@ module "gcp-sa" {
   gh_branch = var.gh_branch
   gh_repo = var.gh_repo
 }
+
+module "gcp-secrets" {
+  source = "./tf-secret"
+
+  gcp_project = var.gcp_project
+
+}
