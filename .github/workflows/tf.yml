@@ -36,10 +36,6 @@ jobs:
         workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_NAME }}
         service_account: ${{ secrets.GCP_WORKLOAD_IDENTITY_SA_EMAIL }}
 
-    # Install gcloud, `setup-gcloud` automatically picks up authentication from `auth`.
-    - name: "Set up Cloud SDK"
-      uses: "google-github-actions/setup-gcloud@v1"
-    
     - name: " Set Credential file"
       run: | 
         echo " Set Credentials "
@@ -48,6 +44,10 @@ jobs:
     - name: "Run gcloud"
       uses: gcloud compute instances list --zones us-east4-c
 
+    # Install gcloud, `setup-gcloud` automatically picks up authentication from `auth`.
+    - name: "Set up Cloud SDK"
+      uses: "google-github-actions/setup-gcloud@v1"
+    
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
