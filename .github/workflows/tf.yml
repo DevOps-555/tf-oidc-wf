@@ -36,10 +36,10 @@ jobs:
         workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_NAME }}
         service_account: ${{ secrets.GCP_WORKLOAD_IDENTITY_SA_EMAIL }}
 
-    - name: " Set Credential file"
-      run: | 
-        echo " Set Credentials "
-        gcloud auth login --cred-file=${{steps.auth.outputs.credentials_file_path}}
+    # - name: " Set Credential file"
+    #   run: | 
+    #     echo " Set Credentials "
+    #     gcloud auth login --cred-file=${{steps.auth.outputs.credentials_file_path}}
 
     - name: "Run gcloud"
       uses: gcloud compute instances list --zones us-east4-c
