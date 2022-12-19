@@ -67,7 +67,7 @@ jobs:
                 "subjectTokenType"   : "urn:ietf:params:oauth:token-type:jwt",
                 "subjectToken"       : "${{steps.idtoken.outputs.idtoken}}"
             }
-        EOF))
+        EOF))>
         echo $STS_TOKEN > sts_token.txt
         echo ::set-output name=sts_token::$STS_TOKEN
 
