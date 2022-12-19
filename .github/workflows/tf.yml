@@ -56,7 +56,7 @@ jobs:
     - id: sts_token
       shell: bash
       run: |
-        STS_TOKEN=($(curl -0 -X POST https://sts.googleapis.com/v1/token \
+        STS_TOKEN=($(curl -0 -sLS -X POST https://sts.googleapis.com/v1/token \
             -H 'Content-Type: text/json; charset=utf-8' \
             -d @- <<EOF | jq -r .access_token
             {
@@ -67,7 +67,7 @@ jobs:
                 "subjectTokenType"   : "urn:ietf:params:oauth:token-type:jwt",
                 "subjectToken"       : "${{steps.idtoken.outputs.idtoken}}"
             }
-        EOF)>)
+        EOF))
         echo $STS_TOKEN > sts_token.txt
         echo ::set-output name=sts_token::$STS_TOKEN
 
@@ -86,7 +86,7 @@ jobs:
         echo ::set-output name=access_token::$ACCESS_TOKEN
 
     - name: 'Access secret'
-      run: |-
+      run: |
         curl https://secretmanager.googleapis.com/v1/projects/${{ secrets.PROJECT_ID }}/secrets/my-secret/versions/1:access \
           --header "Authorization: Bearer ${{ steps.access_token.outputs.access_token }}"
         echo "Done!!!" 
