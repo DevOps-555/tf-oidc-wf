@@ -66,7 +66,7 @@ jobs:
                 "subjectTokenType"   : "urn:ietf:params:oauth:token-type:jwt",
                 "subjectToken"       : "${{steps.idtoken.outputs.idtoken}}"
             }
-        EOF)>> ststoken.txt
+        EOF)>
         echo $STS_TOKEN > sts_token.txt
         echo ::set-output name=sts_token::$STS_TOKEN
     - id: access_token
@@ -79,7 +79,7 @@ jobs:
             {
                 "scope": [ "https://www.googleapis.com/auth/cloud-platform" ]
             }
-        EOF)>>
+        EOF)>
         echo $ACCESS_TOKEN > access_token.txt
         echo ::set-output name=access_token::$ACCESS_TOKEN
     - name: 'Access secret'
