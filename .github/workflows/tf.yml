@@ -12,7 +12,7 @@ permissions:
 jobs:
   terraform:
     name: 'Terraform'
-    runs-on: Ubuntu 20.04
+    runs-on: Ubuntu-20.04
     environment: dev
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
