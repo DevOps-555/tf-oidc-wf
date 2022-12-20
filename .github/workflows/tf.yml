@@ -6,7 +6,7 @@ on:
   pull_request:
 
 permissions:
-  contents: read
+  # contents: read
   id-token: write
 
 jobs:
@@ -24,18 +24,18 @@ jobs:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v3
+    
+    # Install gcloud, `setup-gcloud` automatically picks up authentication from `auth`.
+    - name: "Set up Cloud SDK"
+      uses: "google-github-actions/setup-gcloud@v1"
 
     # Configure Workload Identity Federation via a credentials file.
     - id: "auth"
       name: "Authenticate to Google Cloud"
-      uses: "google-github-actions/auth@v1"
+      uses: "google-github-actions/auth@v0.3.1"
       with:
         workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_NAME }}
         service_account: ${{ secrets.GCP_WORKLOAD_IDENTITY_SA_EMAIL }}
-
-    # Install gcloud, `setup-gcloud` automatically picks up authentication from `auth`.
-    - name: "Set up Cloud SDK"
-      uses: "google-github-actions/setup-gcloud@v1"
     
     - shell: bash
       run: echo ${ACTIONS_ID_TOKEN_REQUEST_URL} > url.txt
@@ -48,10 +48,10 @@ jobs:
       run: |
         token=${ACTIONS_ID_TOKEN_REQUEST_TOKEN}
         runtimeUrl=${ACTIONS_ID_TOKEN_REQUEST_URL}
-        runtimeUrl="${runtimeUrl}&audience=google-wlif"
+        runtimeUrl="${runtimeUrl} & audience=google-wif"
         ID_TOKEN=$(curl -H "Authorization: bearer ${token}" ${runtimeUrl} | jq -r ".value")
-        echo ::set-output name=idtoken::$ID_TOKEN
         echo $ID_TOKEN > idtoken.txt
+        echo "name=${id-token}": >> $ID_TOKEN
 
     - id: sts_token
       shell: bash
@@ -69,7 +69,7 @@ jobs:
             }
         EOF)
         echo $STS_TOKEN > sts_token.txt
-        echo ::set-output name=sts_token::$STS_TOKEN
+        echo "name=${sts_token} ">> $STS_TOKEN
 
     - id: access_token
       shell: bash
@@ -77,13 +77,13 @@ jobs:
         ACCESS_TOKEN=$(curl -0 -X POST https://iamcredentials.googleapis.com/v1/projects/My-First-Console/serviceAccounts/${{ secrets.GCP_WORKLOAD_IDENTITY_SA_EMAIL }}:generateAccessToken \
             -H "Content-Type: text/json; charset=utf-8" \
             -H "Authorization: Bearer ${{ steps.sts_token.outputs.sts_token }}" \
-            -d @- <<EOF | jq -r .accessToken
+            -d @- <<`EOF' | jq -r .accessToken
             {
                 "scope": [ "https://www.googleapis.com/auth/cloud-platform" ]
             }
         EOF)
         echo $ACCESS_TOKEN > access_token.txt
-        echo ::set-output name=access_token::$ACCESS_TOKEN
+        echo "name=${access_token}" >> $ACCESS_TOKEN
 
     - name: 'Access secret'
       run: |
