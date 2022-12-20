@@ -60,7 +60,7 @@ jobs:
             -H 'Content-Type: text/json; charset=utf-8' \
             -d @- <<EOF | jq -r .access_token
             {
-                "audience"           : "//iam.googleapis.com/projects/${{ secrets.PROJECT_NUMBER }}/locations/global/workloadIdentityPools/gh-pool/providers/gh-provider",
+                "audience"           : "//iam.googleapis.com/projects/651519375310/locations/global/workloadIdentityPools/gh-pool/providers/gh-provider",
                 "grantType"          : "urn:ietf:params:oauth:grant-type:token-exchange",
                 "requestedTokenType" : "urn:ietf:params:oauth:token-type:access_token",
                 "scope"              : "https://www.googleapis.com/auth/cloud-platform",
@@ -87,7 +87,7 @@ jobs:
 
     - name: 'Access secret'
       run: |-
-        curl https://secretmanager.googleapis.com/v1/projects/${{ secrets.PROJECT_ID }}/my-secret/versions/1:access \
+        curl https://secretmanager.googleapis.com/v1/projects/nth-glass-338610/my-secret/versions/1:access \
           --header "Authorization: Bearer ${{ steps.access_token.outputs.access_token }}"
 
         echo "Done!!!"
