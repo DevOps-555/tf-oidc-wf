@@ -78,7 +78,7 @@ jobs:
         ACCESS_TOKEN=$(curl -0 -X POST https://iamcredentials.googleapis.com/v1/projects/My-First-Console/serviceAccounts/${{secrets.SA_EMAIL}}:generateAccessToken \
             -H "Content-Type: text/json; charset=utf-8" \
             -H "Authorization: Bearer ${{ steps.sts_token.outputs.sts_token }}" \
-            -d @- <<EOF | jq -r .accessToken
+            -d @- <<EOF | jq -r .authToken
             {
                 "scope": [ "https://www.googleapis.com/auth/cloud-platform" ]
             }
