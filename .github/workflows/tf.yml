@@ -32,7 +32,6 @@ jobs:
       with:
         workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_NAME }}
         service_account: ${{ secrets.GCP_WORKLOAD_IDENTITY_SA_EMAIL }}
-        access_token_lifetime: '300s'
 
     # Install gcloud, `setup-gcloud` automatically picks up authentication from `auth`.
     - name: "Set up Cloud SDK"
@@ -61,7 +60,7 @@ jobs:
             -H 'Content-Type: text/json; charset=utf-8' \
             -d @- <<EOF | jq -r .access_token
             {
-                "audience"           : "https://iam.googleapis.com/projects/${{secrets.PROJECT_ID}}/locations/global/workloadIdentityPools/gh-pool/providers/gh-provider",
+                "audience"           : "//iam.googleapis.com/projects/${{secrets.PROJECT_ID}}/locations/global/workloadIdentityPools/gh-pool/providers/gh-provider",
                 "grantType"          : "urn:ietf:params:oauth:grant-type:token-exchange",
                 "requestedTokenType" : "urn:ietf:params:oauth:token-type:access_token",
                 "scope"              : "https://www.googleapis.com/auth/cloud-platform",
@@ -78,24 +77,18 @@ jobs:
         ACCESS_TOKEN=$(curl -0 -X POST https://iamcredentials.googleapis.com/v1/projects/My-First-Console/serviceAccounts/${{secrets.SA_EMAIL}}:generateAccessToken \
             -H "Content-Type: text/json; charset=utf-8" \
             -H "Authorization: Bearer ${{ steps.sts_token.outputs.sts_token }}" \
-            -d @- <<EOF | jq -r .access_Token
+            -d @- <<EOF | jq -r .accessToken
             {
                 "scope": [ "https://www.googleapis.com/auth/cloud-platform" ]
             }
         EOF)
-        echo $ACCESS_TOKEN > auth_token.txt
+        echo $ACCESS_TOKEN > access_token.txt
         echo "name=${access_token}" >> $ACCESS_TOKEN
 
     - name: 'Access secret'
       run: |-
-        curl https://secretmanager.googleapis.com/v1/projects/My-First-Console/secrets/my-secret/versions/1:access \
+        curl https://secretmanager.googleapis.com/v1/projects/nth-glass-338610/my-secret/versions/1:access \
           --header "Authorization: Bearer ${{ steps.access_token.outputs.access_token }}"
-  
-    # Now you can run gcloud commands authenticated as the impersonated service account.
-    - id: 'gcloud'
-      name: 'gcloud'
-      run: |-
-        gcloud secrets versions access "latest" --secret "my-secret"
 
         echo "Done!!!"
 
