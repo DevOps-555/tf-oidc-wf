@@ -12,7 +12,7 @@ permissions:
 jobs:
   terraform:
     name: 'Terraform'
-    runs-on: Ubuntu-20.04
+    runs-on: ubuntu-20.04
     environment: dev
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
@@ -100,7 +100,10 @@ jobs:
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
-      run: terraform init ../../backend-config/vars.tfvars
+      run: |
+        rm -rf .terraform
+        rm -rf .terraform.lock.hcl
+        terraform init -backend-config ../gcp/backen-config/dev_gcp.state.tf -input=false
 
     # Checks that all Terraform configuration files adhere to a canonical format
     - name: Terraform Format
@@ -108,7 +111,7 @@ jobs:
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      run: terraform plan -input=false ../../backend-config/vars.tfvars
+      run: terraform plan -var-file ../gcp/backend-config/vars.tfvars -input=false -lock=false -refresh=true
 
     # On push to "main", build or change infrastructure according to Terraform configuration files
     # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information:
@@ -116,4 +119,4 @@ jobs:
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
-      run: terraform apply -auto-approve -input=false ../../backend-config/vars.tfvars
+      run: terraform apply -var-file ../gcp/backend-config/vars.tfvars -input=false -lock=false -refresh=true
