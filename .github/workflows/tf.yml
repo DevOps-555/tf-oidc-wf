@@ -60,7 +60,7 @@ jobs:
             -H 'Content-Type: text/json; charset=utf-8' \
             -d @- <<EOF | jq -r .access_token
             {
-                "audience"           : "https://iam.googleapis.com/projects/${{ secrets.PROJECT_NUMBER }}/locations/global/workloadIdentityPools/gh-pool/providers/gh-provider",
+                "audience"           : "//iam.googleapis.com/projects/${{ secrets.PROJECT_NUMBER }}/locations/global/workloadIdentityPools/gh-pool/providers/gh-provider",
                 "grantType"          : "urn:ietf:params:oauth:grant-type:token-exchange",
                 "requestedTokenType" : "urn:ietf:params:oauth:token-type:access_token",
                 "scope"              : "https://www.googleapis.com/auth/cloud-platform",
