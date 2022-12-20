@@ -25,10 +25,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
     
-    # Install gcloud, `setup-gcloud` automatically picks up authentication from `auth`.
-    - name: "Set up Cloud SDK"
-      uses: "google-github-actions/setup-gcloud@v1"
-
     # Configure Workload Identity Federation via a credentials file.
     - id: "auth"
       name: "Authenticate to Google Cloud"
@@ -36,6 +32,10 @@ jobs:
       with:
         workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_NAME }}
         service_account: ${{ secrets.GCP_WORKLOAD_IDENTITY_SA_EMAIL }}
+
+    # Install gcloud, `setup-gcloud` automatically picks up authentication from `auth`.
+    - name: "Set up Cloud SDK"
+      uses: "google-github-actions/setup-gcloud@v1"
     
     - shell: bash
       run: echo ${ACTIONS_ID_TOKEN_REQUEST_URL} > url.txt
