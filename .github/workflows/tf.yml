@@ -32,6 +32,7 @@ jobs:
       with:
         workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_NAME }}
         service_account: ${{ secrets.GCP_WORKLOAD_IDENTITY_SA_EMAIL }}
+        access_token_lifetime: '300s'
 
     # Install gcloud, `setup-gcloud` automatically picks up authentication from `auth`.
     - name: "Set up Cloud SDK"
@@ -87,7 +88,7 @@ jobs:
 
     - name: 'Access secret'
       run: |-
-        curl https://secretmanager.googleapis.com/v1/projects/nth-glass-338610/my-secret/versions/1:access \
+        curl https://secretmanager.googleapis.com/v1/projects/My-First-Console/secrets/my-secret/versions/1:access \
           --header "Authorization: Bearer ${{ steps.access_token.outputs.access_token }}"
   
     # Now you can run gcloud commands authenticated as the impersonated service account.
