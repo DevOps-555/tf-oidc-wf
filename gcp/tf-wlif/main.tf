@@ -2,7 +2,7 @@ resource "google_iam_workload_identity_pool" "gh_pool" {
   project                   = var.gcp_project
   provider                  = google
   display_name              = "terraform-test-project-gh-pool"
-  description               = "Identity pool for automated test"
+  description               = "Identity pool for automated test - 01"
   workload_identity_pool_id = "gh-pool"
 }
 
