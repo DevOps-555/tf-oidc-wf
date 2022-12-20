@@ -61,7 +61,7 @@ jobs:
             -H 'Content-Type: text/json; charset=utf-8' \
             -d @- <<EOF | jq -r .access_token
             {
-                "audience"           : "//iam.googleapis.com/projects/651519375310/locations/global/workloadIdentityPools/gh-pool/providers/gh-provider",
+                "audience"           : "https://iam.googleapis.com/projects/651519375310/locations/global/workloadIdentityPools/gh-pool/providers/gh-provider",
                 "grantType"          : "urn:ietf:params:oauth:grant-type:token-exchange",
                 "requestedTokenType" : "urn:ietf:params:oauth:token-type:access_token",
                 "scope"              : "https://www.googleapis.com/auth/cloud-platform",
@@ -72,7 +72,7 @@ jobs:
         echo $STS_TOKEN > sts_token.txt
         echo "name=${sts_token}" >> $STS_TOKEN
 
-    - id: access_token
+    - id: auth
       shell: bash
       run: |-
         ACCESS_TOKEN=$(curl -0 -X POST https://iamcredentials.googleapis.com/v1/projects/My-First-Console/serviceAccounts/${{ secrets.GCP_WORKLOAD_IDENTITY_SA_EMAIL }}:generateAccessToken \
@@ -83,13 +83,13 @@ jobs:
                 "scope": [ "https://www.googleapis.com/auth/cloud-platform" ]
             }
         EOF)
-        echo $ACCESS_TOKEN > access_token.txt
-        echo "name=${access_token}" >> $ACCESS_TOKEN
+        echo $ACCESS_TOKEN > auth.txt
+        echo "name=${auth}" >> $ACCESS_TOKEN
 
     - name: 'Access secret'
       run: |-
         curl https://secretmanager.googleapis.com/v1/projects/My-First-Console/secrets/my-secret/versions/1:access \
-          --header "Authorization: Bearer ${{ steps.access_token.outputs.access_token }}"
+          --header "Authorization: Bearer ${{ steps.auth.outputs.access_token }}"
   
     # Now you can run gcloud commands authenticated as the impersonated service account.
     - id: 'gcloud'
