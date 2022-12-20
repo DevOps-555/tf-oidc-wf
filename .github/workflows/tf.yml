@@ -89,10 +89,7 @@ jobs:
       run: |
         curl https://secretmanager.googleapis.com/v1/projects/${{ secrets.PROJECT_ID }}/secrets/my-secret/versions/1:access \
           --header "Authorization: Bearer ${{ steps.access_token.outputs.access_token }}"
-        echo "Done!!!" 
-        
-    - name: "List buckets"
-      run: "gcloud storage ls"
+        echo "Done!!!"
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
