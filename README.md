@@ -31,3 +31,6 @@ https://github.com/google-github-actions
 ### OAuth 2.0 Playground
  
 https://developers.google.com/oauthplayground/ 
+
+
+https://github.blog/changelog/2022-10-11-github-actions-deprecating-save-state-and-set-output-commands/
