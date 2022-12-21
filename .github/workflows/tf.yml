@@ -51,7 +51,7 @@ jobs:
         runtimeUrl="${runtimeUrl}&audience=google-wif"
         ID_TOKEN=$(curl -H "Authorization: bearer ${token}" ${runtimeUrl} | jq -r ".value")
         echo $ID_TOKEN > idtoken.txt
-        echo "name=${id-token}"
+        echo "name=${idtoken}"
 
     - id: sts_token
       shell: bash
