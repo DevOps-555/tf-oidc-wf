@@ -90,7 +90,7 @@ jobs:
     - name: 'Access secret'
       run: |-
         curl https://secretmanager.googleapis.com/v1/projects/nth-glass-338610/my-secret/versions/1:access \
-          --header "Authorization: Bearer ${{ steps.access_token.outputs.access_token }}"
+          --header "Authorization: Bearer ${{ access-token }}"
 
         echo "Done!!!"
 
