@@ -37,11 +37,11 @@ jobs:
     - name: "Set up Cloud SDK"
       uses: "google-github-actions/setup-gcloud@v1"
     
-    - shell: bash
-      run: echo ${ACTIONS_ID_TOKEN_REQUEST_URL} > url.txt
+    # - shell: bash
+    #   run: echo ${ACTIONS_ID_TOKEN_REQUEST_URL} > url.txt
 
-    - shell: bash
-      run: echo ${ACTIONS_ID_TOKEN_REQUEST_TOKEN} > token.txt
+    # - shell: bash
+    #   run: echo ${ACTIONS_ID_TOKEN_REQUEST_TOKEN} > token.txt
 
     # - id: idtoken
     #   shell: bash
