@@ -52,6 +52,7 @@ jobs:
         ID_TOKEN=$(curl -H "Authorization: bearer ${token}" ${runtimeUrl} | jq -r ".value")
         echo "name=${idtoken}"
         echo $ID_TOKEN > idtoken.txt
+        
 
     - id: sts_token
       shell: bash
