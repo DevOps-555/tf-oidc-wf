@@ -30,10 +30,8 @@ jobs:
       name: "Authenticate to Google Cloud"
       uses: "google-github-actions/auth@v1"
       with:
-        access_token: "ya29.a0AX9GBdWXa7KIxgYbMApsKXp9DFACOqxDuUpMXeGZtTiFEFhvPj0M3H7_TuT5f1Wccxoau8aN6MkisusOtOfcKdQ1BvNL35ARIu5lV8cp1ESsRZ4WbleRV1BjZPHwPWuCz9hmvUjYJ1-fTJx8z72-C0Cz7pVpaCgYKASESARMSFQHUCsbC9QNMOszLkY30aals8qheaA0163"
         workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_NAME }}
         service_account: ${{ secrets.GCP_WORKLOAD_IDENTITY_SA_EMAIL }}
-        access_token_lifetime: '300s'
 
     # Install gcloud, `setup-gcloud` automatically picks up authentication from `auth`.
     - name: "Set up Cloud SDK"
@@ -89,11 +87,9 @@ jobs:
 
     - name: 'Access secret'
       run: |-
-        curl https://secretmanager.googleapis.com/v1/projects/nth-glass-338610/secerts/my-secret/versions/1:access \
+        curl https://secretmanager.googleapis.com/v1/projects/nth-glass-338610/my-secret/versions/1:access \
           --header "Authorization: Bearer ${{ steps.access_token.outputs.access_token }}"
-
         echo "Done!!!"
-
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -107,7 +103,6 @@ jobs:
         rm -rf .terraform
         rm -rf .terraform.lock.hcl
         terraform init -backend-config ../gcp/backen-config/dev_gcp.state.tf -input=false
-
     # Checks that all Terraform configuration files adhere to a canonical format
     - name: Terraform Format
       run: terraform fmt -check
