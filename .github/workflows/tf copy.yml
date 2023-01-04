@@ -43,15 +43,15 @@ jobs:
     - shell: bash
       run: echo ${ACTIONS_ID_TOKEN_REQUEST_TOKEN} > token.txt
 
-    - id: idtoken
+    - id: id_token
       shell: bash
       run: |-
         token=${ACTIONS_ID_TOKEN_REQUEST_TOKEN}
         runtimeUrl=${ACTIONS_ID_TOKEN_REQUEST_URL}
         runtimeUrl="${runtimeUrl}&audience=google-wif"
         ID_TOKEN=$(curl -H "Authorization: bearer ${token}" ${runtimeUrl} | jq -r ".value")
-        echo $ID_TOKEN > idtoken.txt
-        echo "name=${idtoken}"
+        echo $ID_TOKEN > id_token.txt
+        echo "name=${id_token}"
 
     - id: sts_token
       shell: bash
@@ -65,7 +65,7 @@ jobs:
                 "requestedTokenType" : "urn:ietf:params:oauth:token-type:access_token",
                 "scope"              : "https://www.googleapis.com/auth/cloud-platform",
                 "subjectTokenType"   : "urn:ietf:params:oauth:token-type:id_token",
-                "subjectToken"       : "${{steps.idtoken.outputs.idtoken}}"
+                "subjectToken"       : "${{steps.idtoken.outputs.id_token}}"
             }
         EOF)
         echo $STS_TOKEN > sts_token.txt
