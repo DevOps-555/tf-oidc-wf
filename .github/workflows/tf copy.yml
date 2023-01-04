@@ -64,12 +64,14 @@ jobs:
                 "grantType"          : "urn:ietf:params:oauth:grant-type:token-exchange",
                 "requestedTokenType" : "urn:ietf:params:oauth:token-type:access_token",
                 "scope"              : "https://www.googleapis.com/auth/cloud-platform",
-                "subjectTokenType"   : "urn:ietf:params:oauth:token-type:jwt",
+                "subjectTokenType"   : "urn:ietf:params:oauth:token-type:id_token",
                 "subjectToken"       : "${{steps.idtoken.outputs.idtoken}}"
             }
         EOF)
         echo $STS_TOKEN > sts_token.txt
         echo "name=${sts_token}" >> $STS_TOKEN
+
+# #"urn:ietf:params:oauth:token-type:jwt",
 
     - id: access_token
       shell: bash
